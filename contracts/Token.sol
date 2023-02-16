@@ -27,6 +27,8 @@ contract Token {
         public
         returns (bool success)
     {
+        require(balanceOf[msg.sender]>=_value , "Don't have enough balance to transfer from");
+        require(_to != address(0));
         balanceOf[msg.sender] = balanceOf[msg.sender] - _value;
         balanceOf[_to] = balanceOf[_to] + _value;
         emit Transfer(msg.sender, _to, _value);
