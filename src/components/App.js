@@ -1,44 +1,53 @@
-import config  from '../config.json';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { loadProvider, loadNetwork, loadAccount, loadToken } from '../store/interactions';
-
+import config from "../config.json";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  loadProvider,
+  loadNetwork,
+  loadAccount,
+  loadTokens,
+  loadExchange,
+} from "../store/interactions";
 
 function App() {
   const dispatch = useDispatch();
 
   const loadBlockchainData = async () => {
-    const accounts = await loadAccount(dispatch);
-    console.log(accounts[0])
-
+    //connect ethers to blockchain
     const provider = loadProvider(dispatch);
-    const chainId  = await loadNetwork(provider,dispatch);
-   
-    await loadToken(provider,config[chainId].Sam.address,dispatch)
-  }
+
+    //fetch current networks chainId
+    const chainId = await loadNetwork(provider, dispatch);
+
+    //fetch current account and balance from metamask
+    await loadAccount(provider, dispatch);
+    //load token smart contract
+    const Sam = config[chainId].Sam;
+    const mETH = config[chainId].mETH;
+    await loadTokens(provider, [Sam.address, mETH.address], dispatch);
+
+    //load exchange contract
+    const exchangeConfig = config[chainId].exchange;
+    await loadExchange(provider, exchangeConfig.address, dispatch);
+  };
 
   useEffect(() => {
-    loadBlockchainData()
-  })
-
+    loadBlockchainData();
+  });
 
   return (
     <div>
-
       {/* Navbar */}
 
-      <main className='exchange grid'>
-        <section className='exchange__section--left grid'>
-
+      <main className="exchange grid">
+        <section className="exchange__section--left grid">
           {/* Markets */}
 
           {/* Balance */}
 
           {/* Order */}
-
         </section>
-        <section className='exchange__section--right grid'>
-
+        <section className="exchange__section--right grid">
           {/* PriceChart */}
 
           {/* Transactions */}
@@ -46,15 +55,12 @@ function App() {
           {/* Trades */}
 
           {/* OrderBook */}
-
         </section>
       </main>
 
       {/* Alert */}
-
     </div>
   );
 }
-
 
 export default App;
