@@ -13,8 +13,15 @@ export const tokenSlice = createSlice({
       return {
         ...state,
         loaded: true,
-        contracts: [ token],
+        contracts: [token],
         symbols: [symbol],
+      };
+    },
+    TOKEN_1_BALANCE_LOADED: (state, action) => {
+      const { balance } = action.payload;
+      return {
+        ...state,
+        balances: [balance],
       };
     },
     TOKEN_2_LOADED: (state, action) => {
@@ -26,9 +33,21 @@ export const tokenSlice = createSlice({
         symbols: [...state.symbols, symbol],
       };
     },
+    TOKEN_2_BALANCE_LOADED: (state, action) => {
+      const { balance } = action.payload;
+      return {
+        ...state,
+        balances: [...state.balances, balance],
+      };
+    },
   },
 });
 
-export const { TOKEN_1_LOADED, TOKEN_2_LOADED } = tokenSlice.actions;
+export const {
+  TOKEN_1_LOADED,
+  TOKEN_2_LOADED,
+  TOKEN_1_BALANCE_LOADED,
+  TOKEN_2_BALANCE_LOADED,
+} = tokenSlice.actions;
 
 export default tokenSlice.reducer;

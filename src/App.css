@@ -224,7 +224,10 @@ small {
 	height: auto;
 	margin: 0 0 0 0.75em;
 }
-
+.side__logo--token{
+	width: 20px;
+	height: 20px;
+}
 /* ------------------------------------------------------ */
 /* Universal Component */
 
