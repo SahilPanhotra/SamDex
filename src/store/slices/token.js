@@ -13,8 +13,8 @@ export const tokenSlice = createSlice({
       return {
         ...state,
         loaded: true,
-        contracts: [...state.contracts, token],
-        symbols: [...state.symbols, symbol],
+        contracts: [ token],
+        symbols: [symbol],
       };
     },
     TOKEN_2_LOADED: (state, action) => {
