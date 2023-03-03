@@ -14,9 +14,12 @@ import {
   TOKEN_2_LOADED,
 } from "./slices/token";
 import {
+  ALL_ORDERS_LOADED,
+  CANCELLED_ORDERS_LOADED,
   EXCHANGE_LOADED,
   EXCHANGE_TOKEN_1_BALANCE_LOADED,
   EXCHANGE_TOKEN_2_BALANCE_LOADED,
+  FILLED_ORDERS_LOADED,
   NEW_ORDER_FAIL,
   NEW_ORDER_REQUEST,
   NEW_ORDER_SUCCESS,
@@ -126,6 +129,31 @@ export const loadBalances = async (exchange, tokens, account, dispatch) => {
   );
   dispatch(EXCHANGE_TOKEN_2_BALANCE_LOADED({ balance }));
 };
+
+// LOAD ALL ORDERS
+
+export const loadAllOrders = async (provider, exchange, dispatch) => {
+
+  const block = await provider.getBlockNumber()
+
+  // Fetch canceled orders
+  const cancelStream = await exchange.queryFilter('Cancel', 0, block)
+  const cancelledOrders = cancelStream.map(event => event.args)
+
+  dispatch(CANCELLED_ORDERS_LOADED({cancelledOrders}))
+
+  // Fetch filled orders
+  const tradeStream = await exchange.queryFilter('Trade', 0, block)
+  const filledOrders = tradeStream.map(event => event.args)
+
+  dispatch(FILLED_ORDERS_LOADED({filledOrders}))
+
+  // Fetch all orders
+  const orderStream = await exchange.queryFilter('Order', 0, block)
+  const allOrders = orderStream.map(event => event.args)
+
+  dispatch(ALL_ORDERS_LOADED({allOrders}))
+}
 
 // ------------------------------------------------------------------------------
 // TRANSFER TOKENS (DEPOSIT & WITHDRAWS)

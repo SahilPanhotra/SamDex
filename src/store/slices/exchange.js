@@ -19,6 +19,38 @@ export const exchangeSlice = createSlice({
       const { exchange } = action.payload;
       return { ...state, loaded: true, contract: exchange };
     },
+    CANCELLED_ORDERS_LOADED: (state, action) => {
+      const { cancelledOrders } = action.payload;
+
+      return {
+        ...state,
+        cancelledOrders: {
+          loaded: true,
+          data: cancelledOrders,
+        },
+      };
+    },
+    FILLED_ORDERS_LOADED: (state, action) => {
+      const { filledOrders } = action.payload;
+
+      return {
+        ...state,
+        filledOrders: {
+          loaded: true,
+          data: filledOrders,
+        },
+      };
+    },
+    ALL_ORDERS_LOADED: (state, action) => {
+      const { allOrders } = action.payload;
+      return {
+        ...state,
+        allOrders: {
+          loaded: true,
+          data: allOrders,
+        },
+      };
+    },
     EXCHANGE_TOKEN_1_BALANCE_LOADED: (state, action) => {
       const { balance } = action.payload;
       return { ...state, balances: [balance] };
@@ -79,7 +111,7 @@ export const exchangeSlice = createSlice({
       let data, index;
       const { event, order } = action.payload;
       index = state.allOrders.data.findIndex(
-        (orders) => orders.id === order.id
+        (orders) => orders.id.toString() === order.id.toString()
       );
 
       if (index === -1) {
@@ -126,6 +158,9 @@ export const {
   NEW_ORDER_FAIL,
   NEW_ORDER_REQUEST,
   NEW_ORDER_SUCCESS,
+  CANCELLED_ORDERS_LOADED,
+  FILLED_ORDERS_LOADED,
+  ALL_ORDERS_LOADED
 } = exchangeSlice.actions;
 
 export default exchangeSlice.reducer;
