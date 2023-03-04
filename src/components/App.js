@@ -15,6 +15,7 @@ import Markets from "./Markets";
 import Balance from "./Balance";
 import Order from "./Order";
 import OrderBook from "./OrderBook";
+import PriceChart from "./PriceChart";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,11 +41,15 @@ function App() {
 
     //load exchange contract
     const exchangeConfig = config[chainId].exchange;
-    const exchange=await loadExchange(provider, exchangeConfig.address, dispatch);
+    const exchange = await loadExchange(
+      provider,
+      exchangeConfig.address,
+      dispatch
+    );
     //fetch all orders:open ,filled,cancelled
-    loadAllOrders(provider,exchange,dispatch);
+    loadAllOrders(provider, exchange, dispatch);
     //subscribe to blockchain events
-    subscribeToEvents(exchange,dispatch);
+    subscribeToEvents(exchange, dispatch);
   };
 
   useEffect(() => {
@@ -57,20 +62,20 @@ function App() {
 
       <main className="exchange grid">
         <section className="exchange__section--left grid">
-          <Markets/>
+          <Markets />
 
-          <Balance/>
+          <Balance />
 
-          <Order/>
+          <Order />
         </section>
         <section className="exchange__section--right grid">
-          {/* PriceChart */}
+          <PriceChart />
 
           {/* Transactions */}
 
           {/* Trades */}
 
-          <OrderBook/>
+          <OrderBook />
         </section>
       </main>
 
