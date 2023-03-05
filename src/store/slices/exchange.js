@@ -19,6 +19,44 @@ export const exchangeSlice = createSlice({
       const { exchange } = action.payload;
       return { ...state, loaded: true, contract: exchange };
     },
+    // CANCELLING ORDERS
+    ORDER_CANCEL_REQUEST: (state) => {
+      return {
+        ...state,
+        transaction: {
+          transactionType: "Cancel",
+          isPending: true,
+          isSuccessful: false,
+        },
+      };
+    },
+    ORDER_CANCEL_SUCCESS: (state, action) => {
+      const {order,event}=action.payload;
+      return {
+        ...state,
+        transaction: {
+          transactionType: "Cancel",
+          isPending: false,
+          isSuccessful: true,
+        },
+        cancelledOrders: {
+          ...state.cancelledOrders,
+          data: [...state.cancelledOrders.data, order],
+        },
+        events: [event, ...state.events],
+      };
+    },
+    ORDER_CANCEL_FAIL: (state) => {
+      return {
+        ...state,
+        transaction: {
+          transactionType: "Cancel",
+          isPending: false,
+          isSuccessful: false,
+          isError: true,
+        },
+      };
+    },
     CANCELLED_ORDERS_LOADED: (state, action) => {
       const { cancelledOrders } = action.payload;
 
@@ -160,7 +198,10 @@ export const {
   NEW_ORDER_SUCCESS,
   CANCELLED_ORDERS_LOADED,
   FILLED_ORDERS_LOADED,
-  ALL_ORDERS_LOADED
+  ALL_ORDERS_LOADED,
+  ORDER_CANCEL_REQUEST,
+  ORDER_CANCEL_SUCCESS,
+  ORDER_CANCEL_FAIL,
 } = exchangeSlice.actions;
 
 export default exchangeSlice.reducer;
