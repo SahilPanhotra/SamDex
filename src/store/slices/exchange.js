@@ -12,6 +12,12 @@ export const exchangeSlice = createSlice({
       loaded: false,
       data: [],
     },
+    cancelledOrders: {
+      data: [],
+    },
+    filledOrders: {
+      data: [],
+    },
     events: [],
   },
   reducers: {
@@ -31,7 +37,7 @@ export const exchangeSlice = createSlice({
       };
     },
     ORDER_CANCEL_SUCCESS: (state, action) => {
-      const {order,event}=action.payload;
+      const { order, event } = action.payload;
       return {
         ...state,
         transaction: {
@@ -183,6 +189,56 @@ export const exchangeSlice = createSlice({
         },
       };
     },
+    // FILLING ORDERS
+    ORDER_FILL_REQUEST: (state) => {
+      return {
+        ...state,
+        transaction: {
+          transactionType: "Fill Order",
+          isPending: true,
+          isSuccessful: false,
+        },
+      };
+    },
+    ORDER_FILL_SUCCESS: (state, action) => {
+      // Prevent duplicate orders
+      const { event, order } = action.payload;
+      let index, data;
+      index = state.filledOrders.data.findIndex(
+        (o) => o.id.toString() === order.id.toString()
+      );
+
+      if (index === -1) {
+        data = [...state.filledOrders.data, order];
+      } else {
+        data = state.filledOrders.data;
+      }
+
+      return {
+        ...state,
+        transaction: {
+          transactionType: "Fill Order",
+          isPending: false,
+          isSuccessful: true,
+        },
+        filledOrders: {
+          ...state.filledOrders,
+          data,
+        },
+        events: [event, ...state.events],
+      };
+    },
+    ORDER_FILL_FAIL: (state) => {
+      return {
+        ...state,
+        transaction: {
+          transactionType: "Fill Order",
+          isPending: false,
+          isSuccessful: false,
+          isError: true,
+        },
+      };
+    },
   },
 });
 
@@ -202,6 +258,9 @@ export const {
   ORDER_CANCEL_REQUEST,
   ORDER_CANCEL_SUCCESS,
   ORDER_CANCEL_FAIL,
+  ORDER_FILL_FAIL,
+  ORDER_FILL_REQUEST,
+  ORDER_FILL_SUCCESS
 } = exchangeSlice.actions;
 
 export default exchangeSlice.reducer;
