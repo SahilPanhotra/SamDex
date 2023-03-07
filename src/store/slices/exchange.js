@@ -106,7 +106,7 @@ export const exchangeSlice = createSlice({
     TRANSFER_REQUEST: (state) => {
       return {
         ...state,
-        trasnsaction: {
+        transaction: {
           transactionType: "Transfer",
           isPending: true,
           isSuccessful: false,

@@ -74,19 +74,30 @@ const Balance = () => {
   };
 
   const withdrawHandler = (e, token) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (token.address === tokens[0].address) {
-      transferTokens(provider, exchange, 'Withdraw', token, token1TransferAmount, dispatch)
-      setToken1TransferAmount(0)
+      transferTokens(
+        provider,
+        exchange,
+        "Withdraw",
+        token,
+        token1TransferAmount,
+        dispatch
+      );
+      setToken1TransferAmount(0);
     } else {
-      transferTokens(provider, exchange, 'Withdraw', token, token2TransferAmount, dispatch)
-      setToken2TransferAmount(0)
+      transferTokens(
+        provider,
+        exchange,
+        "Withdraw",
+        token,
+        token2TransferAmount,
+        dispatch
+      );
+      setToken2TransferAmount(0);
     }
-
-    console.log("withrawing tokens...")
-  }
-
+  };
 
   useEffect(() => {
     if (exchange && tokens[0] && tokens[1] && account) {
@@ -112,7 +123,7 @@ const Balance = () => {
         </div>
       </div>
 
-      {/* Deposit/Withdraw Component 1 (DApp) */}
+      {/* Deposit/Withdraw Component 1 (Sam) */}
 
       <div className="exchange__transfers--form">
         <div className="flex-between">
@@ -134,7 +145,13 @@ const Balance = () => {
           </p>
         </div>
 
-        <form onSubmit={isDeposit ? (e) => depositHandler(e, tokens[0]) : (e) => withdrawHandler(e, tokens[0])}>
+        <form
+          onSubmit={
+            isDeposit
+              ? (e) => depositHandler(e, tokens[0])
+              : (e) => withdrawHandler(e, tokens[0])
+          }
+        >
           <label htmlFor="token0">{symbols && symbols[0]} Amount</label>
           <input
             type="number"
@@ -174,8 +191,14 @@ const Balance = () => {
           </p>
         </div>
 
-        <form onSubmit={isDeposit ? (e) => depositHandler(e, tokens[1]) : (e) => withdrawHandler(e, tokens[1])}>
-          <label htmlFor="token1"></label>
+        <form
+          onSubmit={
+            isDeposit
+              ? (e) => depositHandler(e, tokens[1])
+              : (e) => withdrawHandler(e, tokens[1])
+          }
+        >
+          <label htmlFor="token1">{symbols && symbols[1]}Amount</label>
           <input
             type="number"
             id="token1"
