@@ -16,16 +16,16 @@
     },
     "80001": {
         "exchange": {
-            "address": "0xc6B4c7320C46Bf9015bDBD55e2D4fa6B57A9f295"
+            "address": "0x2c705B341BFb74cc6AC1598AF360A07CF7059284"
         },
         "Sam": {
-            "address": "0xdDe7EF81f023d3a7BF2ABEEe7457E478F56bB691"
+            "address": "0x13B75d58d7E5Fbe93e26Ed16d536445EE79b82AF"
         },
         "mETH": {
-            "address": "0x6ade9D941Ec7B150A496f7F52EDc9a0aCDa63091"
+            "address": "0x795746cE5A31A3Ea04ee001D707Ea5894B810bc0"
         },
         "mDAI": {
-            "address": "0x473615e61476306ef7380A6C4586F2334053ae4c"
+            "address": "0x106657A3deF9686bc64c832785B5632e4d0E29BE"
         },
         "explorerURL": "https://mumbai.polygonscan.com/"
     }
