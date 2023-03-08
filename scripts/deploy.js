@@ -10,11 +10,11 @@ async function main() {
   const accounts = await hre.ethers.getSigners();
 
   console.log(
-    `Accounts fetched:\n${accounts[0].address}}\n`
+    `Accounts fetched:\n${accounts[0].address}\n${accounts[1].address}\n`
   );
 
   // Deploy contracts
-  const sam = await Token.deploy("SAM TOKEN", "SAM", "1000000");
+  const sam = await Token.deploy(" TOKEN", "SAM", "1000000");
   await sam.deployed();
   console.log(`SAM Deployed to: ${sam.address}`);
 
@@ -26,7 +26,7 @@ async function main() {
   await mDAI.deployed();
   console.log(`mDAI Deployed to: ${mDAI.address}`);
 
-  const exchange = await Exchange.deploy(accounts[0].address, 10);
+  const exchange = await Exchange.deploy(accounts[1].address, 10);
   await exchange.deployed();
   console.log(`Exchange Deployed to: ${exchange.address}`);
 }
