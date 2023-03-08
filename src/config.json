@@ -15,6 +15,18 @@
         "explorerURL": "#"
     },
     "80001": {
+        "exchange": {
+            "address": "0xc6B4c7320C46Bf9015bDBD55e2D4fa6B57A9f295"
+        },
+        "Sam": {
+            "address": "0xdDe7EF81f023d3a7BF2ABEEe7457E478F56bB691"
+        },
+        "mETH": {
+            "address": "0x6ade9D941Ec7B150A496f7F52EDc9a0aCDa63091"
+        },
+        "mDAI": {
+            "address": "0x473615e61476306ef7380A6C4586F2334053ae4c"
+        },
         "explorerURL": "https://mumbai.polygonscan.com/"
     }
 }
