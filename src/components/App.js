@@ -50,7 +50,7 @@ function App() {
       dispatch
     );
     //fetch all orders:open ,filled,cancelled
-    loadAllOrders(provider, exchange, dispatch);
+    await loadAllOrders(provider, exchange, dispatch);
     //subscribe to blockchain events
     subscribeToEvents(exchange, dispatch);
   };

@@ -86,14 +86,39 @@ export const loadExchange = async (provider, address, dispatch) => {
 };
 
 export const subscribeToEvents = (exchange, dispatch) => {
-  exchange.on('Cancel', (id, user, tokenGet, amountGet, tokenGive, amountGive, timestamp, event) => {
-    const order = event.args
-    dispatch(ORDER_CANCEL_SUCCESS({order, event }))
-  })
-  exchange.on('Trade', (id, user, tokenGet, amountGet, tokenGive, amountGive, creator, timestamp, event) => {
-    const order = event.args
-    dispatch(ORDER_FILL_SUCCESS({order, event}) )
-  })
+  exchange.on(
+    "Cancel",
+    (
+      id,
+      user,
+      tokenGet,
+      amountGet,
+      tokenGive,
+      amountGive,
+      timestamp,
+      event
+    ) => {
+      const order = event.args;
+      dispatch(ORDER_CANCEL_SUCCESS({ order, event }));
+    }
+  );
+  exchange.on(
+    "Trade",
+    (
+      id,
+      user,
+      tokenGet,
+      amountGet,
+      tokenGive,
+      amountGive,
+      creator,
+      timestamp,
+      event
+    ) => {
+      const order = event.args;
+      dispatch(ORDER_FILL_SUCCESS({ order, event }));
+    }
+  );
   exchange.on("Deposit", (token, user, amount, balance, event) => {
     dispatch(TRANSFER_SUCCESS({ event }));
   });
@@ -147,27 +172,25 @@ export const loadBalances = async (exchange, tokens, account, dispatch) => {
 // LOAD ALL ORDERS
 
 export const loadAllOrders = async (provider, exchange, dispatch) => {
-
-  const block = await provider.getBlockNumber()
+  const block = await provider.getBlockNumber();
 
   // Fetch canceled orders
-  const cancelStream = await exchange.queryFilter('Cancel', 0, block)
-  const cancelledOrders = cancelStream.map(event => event.args)
-
-  dispatch(CANCELLED_ORDERS_LOADED({cancelledOrders}))
+  const cancelStream = await exchange.queryFilter("Cancel", 32867473, block);
+  const cancelledOrders = cancelStream.map((event) => event.args);
+  dispatch(CANCELLED_ORDERS_LOADED({ cancelledOrders }));
 
   // Fetch filled orders
-  const tradeStream = await exchange.queryFilter('Trade', 0, block)
-  const filledOrders = tradeStream.map(event => event.args)
+  const tradeStream = await exchange.queryFilter("Trade", 32867473, block);
+  const filledOrders = tradeStream.map((event) => event.args);
 
-  dispatch(FILLED_ORDERS_LOADED({filledOrders}))
+  dispatch(FILLED_ORDERS_LOADED({ filledOrders }));
 
   // Fetch all orders
-  const orderStream = await exchange.queryFilter('Order', 0, block)
-  const allOrders = orderStream.map(event => event.args)
+  const orderStream = await exchange.queryFilter("Order", 32867473, block);
+  const allOrders = orderStream.map((event) => event.args);
 
-  dispatch(ALL_ORDERS_LOADED({allOrders}))
-}
+  dispatch(ALL_ORDERS_LOADED({ allOrders }));
+};
 
 // ------------------------------------------------------------------------------
 // TRANSFER TOKENS (DEPOSIT & WITHDRAWS)
@@ -267,28 +290,26 @@ export const makeSellOrder = async (
 // CANCEL ORDER
 
 export const cancelOrder = async (provider, exchange, order, dispatch) => {
-
-  dispatch(ORDER_CANCEL_REQUEST())
+  dispatch(ORDER_CANCEL_REQUEST());
 
   try {
-    const signer = await provider.getSigner()
-    const transaction = await exchange.connect(signer).cancelOrder(order.id)
-    await transaction.wait()
+    const signer = await provider.getSigner();
+    const transaction = await exchange.connect(signer).cancelOrder(order.id);
+    await transaction.wait();
   } catch (error) {
-    dispatch(ORDER_CANCEL_FAIL())
+    dispatch(ORDER_CANCEL_FAIL());
   }
-}
+};
 // FILL ORDER
 
 export const fillOrder = async (provider, exchange, order, dispatch) => {
-  dispatch(ORDER_FILL_REQUEST())
+  dispatch(ORDER_FILL_REQUEST());
 
   try {
-    const signer = await provider.getSigner()
-    const transaction = await exchange.connect(signer).fillOrder(order.id)
-    await transaction.wait()
+    const signer = await provider.getSigner();
+    const transaction = await exchange.connect(signer).fillOrder(order.id);
+    await transaction.wait();
   } catch (error) {
-    dispatch(ORDER_FILL_FAIL())
+    dispatch(ORDER_FILL_FAIL());
   }
-}
-
+};
